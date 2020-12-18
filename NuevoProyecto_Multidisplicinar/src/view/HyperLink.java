@@ -12,15 +12,12 @@ import javax.swing.JLabel;
 import model.ModelView;
 
 public class HyperLink implements MouseListener {
-	private LoginView loginView;
 	private RegisterView registerView;
 	private ModelView model;
 
-	public HyperLink(LoginView loginView, RegisterView registerView,ModelView model) {
-		this.loginView = loginView;
+	public HyperLink(RegisterView registerView,ModelView model) {
 		this.registerView = registerView;
 		this.model = model;
-		loginView.getLabelSignUp().addMouseListener(this);
 	}
 
 	/**
@@ -37,9 +34,9 @@ public class HyperLink implements MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		//setLink(loginView.getLabelSignUp());
-		registerView = new RegisterView(model,loginView);
-		loginView.dispose();
-		registerView.setVisible(true);
+//		registerView = new RegisterView(model,loginView);
+//		loginView.dispose();
+//		registerView.setVisible(true);
 
 	}
 

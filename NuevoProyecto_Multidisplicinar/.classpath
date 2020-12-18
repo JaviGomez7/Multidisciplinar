@@ -6,6 +6,10 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
+<<<<<<< HEAD
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Libreria"/>
+=======
+	<classpathentry kind="lib" path="C:/Users/javig/OneDrive/Escritorio/com.mysql.jdbc_5.1.5.jar"/>
+>>>>>>> branch 'master' of https://github.com/JaviGomez7/Multidisciplinar.git
 	<classpathentry kind="output" path="bin"/>
 </classpath>
