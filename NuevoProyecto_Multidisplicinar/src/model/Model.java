@@ -1,50 +1,100 @@
 package model;
 
 import java.util.ArrayList;
+
 public class Model {
-	/**
-	 * Parámetros de configuracion a MySQL
-	 */
-	private ArrayList<String> dbParameters;
-	
-	/**
-	 * Queries de manipulacion de datos
-	 */
-	private ArrayList<String> queries;
-	
-	/**
-	 * Constructor por defecto
-	 */
+	private ArrayList<String> labelsTexts;
+	private ArrayList<String> labelsRegisterTexts;
+	private ArrayList<String> buttonGroupText;
+	private String btnLoginText;
+	private int totalTextFields = 2;
+	private String signUpText = "Registrarse";
+
 	public Model() {
-		dbParameters = new ArrayList<String>();
-		dbParameters.add("com.mysql.jdbc.Driver");					// 0: MySQL driver
-		dbParameters.add("jdbc:mysql://localhost/hogwarts");		// 1: MySQL url
-		dbParameters.add("root");									// 2: MySQL user
-		dbParameters.add("");										// 3: MySQL password
+		addLabelsTexts();
+		addLabelsRegisterTexts();
+		addRadioGroupText();
+		btnLoginText = "Iniciar sesión";
+	}
+
+	public int getTotalTextFields() {
+		return totalTextFields;
+	}
+
+	public void setTotalTextFields(int totalTextFields) {
+		this.totalTextFields = totalTextFields;
+	}
+
+	/**
+	 * Método que rellena el ArrayList labelsTexts.
+	 */
+	private void addLabelsTexts() {
+		labelsTexts = new ArrayList<String>();
+		labelsTexts.add("Dirección de email");
+		labelsTexts.add("Contraseña");
+		labelsTexts.add("Regístrarse");
+	}
+	/**
+	 * Método que rellena el ArrayList de labels de la clase RegisterView.
+	 */
+	private void addLabelsRegisterTexts() {
+		labelsRegisterTexts = new ArrayList<String>();
+		labelsRegisterTexts.add("Nombre");
+		labelsRegisterTexts.add("Apellidos");
+		labelsRegisterTexts.add("Correo electrónico");
+		labelsRegisterTexts.add("Contraseña");
+		labelsRegisterTexts.add("Edad");
+		labelsRegisterTexts.add("Casa en Hogwarts");
+		labelsRegisterTexts.add("Profesor");
+		labelsRegisterTexts.add("Alumno");
+		labelsRegisterTexts.add("Enviar");
 		
-		queries = new ArrayList<String>();
-		queries.add("INSERT INTO users "
-				+ "(first_name, last_name, email, password, age, house, user_type, create_date, last_modified) "
-				+ "VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), NOW());");	// 0: Insertar nuevo usuario
-		
-		
-		queries.add("SELECT first_name, last_name, email, password, age, house, user_type "
-				+ "FROM users "
-				+ "WHERE email = ? "
-				+ "AND password = ?");								// 1: Buscar usuario por email y password
-		
+	}
+	private void addRadioGroupText() {
+		buttonGroupText = new ArrayList<String>();
+		buttonGroupText.add("Profesor");
+		buttonGroupText.add("Alumno");
 	}
 
 	
-	// Getters
-	public ArrayList<String> getDbParameters() {
-		return dbParameters;
+	public ArrayList<String> getButtonGroupText() {
+		return buttonGroupText;
 	}
 
-	public ArrayList<String> getQueries() {
-		return queries;
+	public void setButtonGroupText(ArrayList<String> buttonGroupText) {
+		this.buttonGroupText = buttonGroupText;
 	}
-	
-	
+
+	public ArrayList<String> getLabelsTexts() {
+		return labelsTexts;
+	}
+
+	public void setLabelsTexts(ArrayList<String> labelsTexts) {
+		this.labelsTexts = labelsTexts;
+	}
+
+	public String getBtnLoginText() {
+		return btnLoginText;
+	}
+
+	public void setBtnLoginText(String btnLoginText) {
+		this.btnLoginText = btnLoginText;
+	}
+
+	public String getSignUpText() {
+		return signUpText;
+	}
+
+	public void setSignUpText(String signUpText) {
+		this.signUpText = signUpText;
+	}
+
+	public ArrayList<String> getLabelsRegisterTexts() {
+		return labelsRegisterTexts;
+	}
+
+	public void setLabelsRegisterTexts(ArrayList<String> labelsRegisterTexts) {
+		this.labelsRegisterTexts = labelsRegisterTexts;
+	}
 
 }

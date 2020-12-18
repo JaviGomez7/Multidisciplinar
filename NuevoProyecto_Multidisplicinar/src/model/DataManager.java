@@ -8,17 +8,16 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DataManager {
-	private Model model;
+	private ModelDataBase model;
 	private Connection conn;
 	private Statement stmt;
 	private PreparedStatement prepStmt;
-	
-	
-	public DataManager(Model model2) {
-		this.model = model2;
+
+	public DataManager(ModelDataBase model) {
+		this.model = model;
 	}
-	
-	private void connect() {
+
+	public void connect() {
 		String driver = model.getDbParameters().get(0);
 		String url = model.getDbParameters().get(1);
 		String user = model.getDbParameters().get(2);
@@ -26,24 +25,27 @@ public class DataManager {
 		try {
 			Class.forName(driver);
 			conn = DriverManager.getConnection(url, user, password);
-			stmt  = conn.createStatement();
+			stmt = conn.createStatement();
 		} catch (ClassNotFoundException e) {
 			System.out.println("Error de driver de MySQL");
 		} catch (SQLException e) {
 			System.out.println("No se ha podido establecer la conexión con MySQL");
 		}
 	}
-	
-	private void disconnect() {
+
+	public void disconnect() {
 		try {
-			if(stmt != null) stmt.close();
-			if(prepStmt != null) prepStmt.close();
-			if(conn != null) conn.close();
+			if (stmt != null)
+				stmt.close();
+			if (prepStmt != null)
+				prepStmt.close();
+			if (conn != null)
+				conn.close();
 		} catch (SQLException e) {
 			System.out.println("Se ha producido un error al cerrar la conexión con MySQL");
 		}
 	}
-	
+
 	public int insertUser(User user) {
 		int rowCount = 0;
 		String sql = model.getQueries().get(0);
@@ -57,11 +59,11 @@ public class DataManager {
 			prepStmt.setString(4, user.getPassword());
 			prepStmt.setInt(5, user.getAge());
 			prepStmt.setString(6, user.getHouse());
-			if(user.isProfessor())
+			if (user.isProfessor())
 				prepStmt.setInt(7, 1);
 			else
 				prepStmt.setInt(7, 0);
-			
+
 			rowCount = prepStmt.executeUpdate();
 			disconnect();
 		} catch (SQLException e) {
@@ -69,7 +71,7 @@ public class DataManager {
 		}
 		return rowCount;
 	}
-	
+
 	public User searchUser(String email, String password) {
 		User user = null;
 		String sql = model.getQueries().get(1);
@@ -80,7 +82,7 @@ public class DataManager {
 			prepStmt.setString(1, email);
 			prepStmt.setString(2, password);
 			ResultSet rs = prepStmt.executeQuery();
-			if(rs.next()) {
+			if (rs.next()) {
 				user = new User();
 				user.setFirstName(rs.getString(1));
 				user.setLastName(rs.getString(2));
@@ -88,7 +90,7 @@ public class DataManager {
 				user.setPassword(rs.getString(4));
 				user.setAge(rs.getInt(5));
 				user.setHouse(rs.getString(6));
-				if(rs.getInt(7) == 1)
+				if (rs.getInt(7) == 1)
 					user.setProfessor(true);
 				else
 					user.setProfessor(false);
@@ -97,7 +99,7 @@ public class DataManager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		return user;
 	}
 

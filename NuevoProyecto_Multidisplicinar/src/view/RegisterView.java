@@ -9,8 +9,10 @@ import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.border.EmptyBorder;
 
+import model.DataManager;
 import model.Model;
-import model.ModelView;
+import model.ModelDataBase;
+import model.User;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -24,6 +26,7 @@ import javax.swing.SwingConstants;
 import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.awt.event.ActionEvent;
@@ -40,11 +43,11 @@ public class RegisterView extends JFrame {
 	private JPanel panel_1;
 	private ButtonGroup groupButtons;
 	private JRadioButton buttonTeacher, buttonAlumn;
-	private ModelView model;
+	private Model model;
 	private JButton buttonSend;
-	private ArrayList<JTextField> listTextFields;
-	private ArrayList<JPasswordField> listPasswordFields;
-	private LoginView viewLogin;
+	private ViewLogin viewLogin;
+	private DataManager dataManager;
+	private ModelDataBase modelDB;
 
 	/**
 	 * Launch the application.
@@ -66,7 +69,7 @@ public class RegisterView extends JFrame {
 	 * Create the frame.
 	 */
 	public RegisterView() {
-		model = new ModelView();
+		model = new Model();
 		setTitle("REGISTRO");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -147,12 +150,31 @@ public class RegisterView extends JFrame {
 				if (nameText.getText().isEmpty() || lastNameText.getText().isEmpty() || emailText.getText().isEmpty()
 						|| passwordText.getText().isEmpty() || confirmPasswordText.getText().isEmpty()
 						|| ageText.getText().isEmpty()) {
-					System.out.println("AUN NO");
+
 				} else {
 					int reply = JOptionPane.showConfirmDialog(null,
 							"Los datos son correctos, ¿seguro que desea registrarse?", "Registro",
 							JOptionPane.YES_NO_OPTION);
 					if (reply == JOptionPane.YES_OPTION) {
+						modelDB = new ModelDataBase();
+						dataManager = new DataManager(modelDB);
+						dataManager.connect();
+						Date dateToday = new Date();
+						if (buttonTeacher.isSelected()) {
+							User userInsert = new User(nameText.getText(), lastNameText.getText(), emailText.getText(),
+									passwordText.getPassword().toString(), Integer.parseInt(ageText.getText()),
+									housesCombo.getSelectedItem().toString(), true);
+							dataManager.insertUser(userInsert);
+							dataManager.disconnect();
+						} else if (buttonAlumn.isSelected()) {
+							User userInsert = new User(nameText.getText(), lastNameText.getText(), emailText.getText(),
+									passwordText.getText(), Integer.parseInt(ageText.getText()),
+									housesCombo.getSelectedItem().toString(), false);
+							dataManager.disconnect();
+							dataManager.insertUser(userInsert);
+						} else {
+							JOptionPane.showMessageDialog(null, "Error en el registro");
+						}
 						JOptionPane.showMessageDialog(null, "Registrado correctamente");
 					} else {
 
@@ -236,7 +258,7 @@ public class RegisterView extends JFrame {
 	}
 
 	private void checkSamePasswords() {
-		viewLogin = new LoginView();
+		viewLogin = new ViewLogin();
 		String password = new String(passwordText.getPassword());
 		String confirmPassword = new String(confirmPasswordText.getPassword());
 		if (password.length() > 8 && password.length() < 64 && viewLogin.checkSpace(password) == true
